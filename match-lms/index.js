@@ -3,10 +3,11 @@ const github = require('@actions/github');
 const lmsVersionHelper = require('./lms-version-helper');
 
 try {
-    core.setOutput("lmsVersion", lmsVersionHelper.tryGetActiveDevelopmentRelease())
+    core.setOutput("lmsVersion", lmsVersionHelper.tryGetActiveDevelopmentRelease());
+    console.log(lmsVersionHelper.tryGetActiveDevelopmentRelease() + ' tryGetActiveDevelopmentRelease');
     // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
+    const payload = JSON.stringify(github.context.payload, undefined, 2);
+    //console.log(`The event payload: ${payload}`);
 } catch (error) {
     core.setFailed(error.message);
 }
