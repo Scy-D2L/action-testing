@@ -98,4 +98,4 @@ async function tryGetActiveDevelopmentRelease() {
 
 }
 
-exports.tryGetActiveDevelopmentRelease = trygetActiveDevelopmentRelease;
+exports.tryGetActiveDevelopmentRelease = tryGetActiveDevelopmentRelease;
