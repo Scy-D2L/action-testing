@@ -1,11 +1,11 @@
 
-const chalk = require('chalk'),
-	rally = require('rally'),
-	moment = require('moment-timezone');
+// const chalk = require('chalk'),
+// 	rally = require('rally'),
+// 	moment = require('moment-timezone');
 
-const rallyVersionChecker = /^(20\.[0-9]{2}\.)([0-9]{2})$/;
+// const rallyVersionChecker = /^(20\.[0-9]{2}\.)([0-9]{2})$/;
 
-export default async function tryGetActiveDevelopmentRelease() {
+async function tryGetActiveDevelopmentRelease() {
 
 	return '20.22.1';
 
@@ -97,3 +97,5 @@ export default async function tryGetActiveDevelopmentRelease() {
 	// return activeReleaseName;
 
 }
+
+exports.tryGetActiveDevelopmentRelease = trygetActiveDevelopmentRelease;
