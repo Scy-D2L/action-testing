@@ -5,7 +5,7 @@ const chalk = require('chalk'),
 
 const rallyVersionChecker = /^(20\.[0-9]{2}\.)([0-9]{2})$/;
 
-async function tryGetActiveDevelopmentRelease() {
+export async function tryGetActiveDevelopmentRelease() {
 
 	return 'v20.22.1-29';
 
