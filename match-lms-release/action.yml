@@ -29,7 +29,7 @@ runs:
     - name: Determine version
       run: |
         #manipulate lms version from 20.22.11 format to 2022.11 format
-        LMSVER_MATCH=$(${{ inputs.LMS_VERSION }} | sed 's/\.//')
+        LMSVER_MATCH=$(echo ${{ inputs.LMS_VERSION }} | sed 's/\.//')
         #get latest minor release from package.json ie: 2022.11
         LATEST_MINOR=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json | sed 's/\.[^.]*$//')
 
