@@ -7,9 +7,12 @@ jobs:
     steps:
       - name: Get LMS Version Action Step
         id: getlmsver
-        uses: Scy-D2L/action-testing/match-lms@main
+        uses: Scy-D2L/action-testing/get-lms-release@main
+      - name: Get the output
+        run: echo "The version was ${{ steps.getlmsver.outputs.lms-version }}"
+      # Use the output from the `get release` step to bump the current version
+      - name: Match LMS Release Action Step
+        id: matchlmsrelease
+        uses: Scy-D2L/action-testing/match-lms-release@main
         with:
-          who-to-greet: 'Nimbus the OctoDAD'
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.getlmsver.outputs.lmsVersion }}"
+          lms-version: '${{ steps.getlmsver.outputs.lms-version }}'

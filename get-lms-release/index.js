@@ -6,10 +6,7 @@ async function run() {
     try {
         const version = await lmsVersionHelper.tryGetActiveDevelopmentRelease()
         console.log(version + ' tryGetActiveDevelopmentRelease');
-        core.setOutput("lmsVersion", version);
-        // Get the JSON webhook payload for the event that triggered the workflow
-        const payload = JSON.stringify(github.context.payload, undefined, 2);
-        //console.log(`The event payload: ${payload}`);
+        core.setOutput("lms-version", version);
     } catch (error) {
         core.setFailed(error.message);
     }
