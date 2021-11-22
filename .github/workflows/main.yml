@@ -1,18 +1,16 @@
 on: [push]
 
 jobs:
-  hello_world_job:
+  release:
     runs-on: ubuntu-latest
     name: Getting current lms release from Rally
     steps:
-      - name: Get LMS Version Action Step
+      - name: Get LMS Version
         id: getlmsver
         uses: Scy-D2L/action-testing/get-lms-release@main
-      - name: Get the output
-        run: echo "The version was ${{ steps.getlmsver.outputs.lms-version }}"
-      # Use the output from the `get release` step to bump the current version
-      - name: Match LMS Release Action Step
+      - name: Match LMS Release
         id: matchlmsrelease
         uses: Scy-D2L/action-testing/match-lms-release@main
         with:
+          GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
           lms-version: '${{ steps.getlmsver.outputs.lms-version }}'

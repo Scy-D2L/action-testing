@@ -1,0 +1,71 @@
+name: Match LMS Release
+description: Create a release based on the current version of Brightspace and the patch version of the consumer
+
+inputs:
+  DRY_RUN:
+    description: Simulates a release but does not actually do one
+    default: false
+    required: false
+  GITHUB_TOKEN:
+    description: Token to use to update version in 'package.json' and create the tag
+    required: true
+  LMS_VERSION:
+    description: The current lms release version
+    required: true
+
+outputs:
+  VERSION:
+    description: Version of the new release
+    value: ${{ steps.increment-version.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install Dependencies
+      run: |
+        echo "Installing dependencies..."
+        npm install @octokit/rest@18 --prefix ${{ github.action_path }} --no-save --loglevel error
+      shell: bash
+    - name: Determine version
+      run: |
+        #manipulate lms version from 20.22.11 format to 2022.11 format
+        LMSVER_MATCH=$(${{ inputs.LMS_VERSION }} | sed 's/\.//')
+        #get latest minor release from package.json ie: 2022.11
+        LATEST_MINOR=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json | sed 's/\.[^.]*$//')
+
+        #todo: patch if not on master/main?
+        if [ $LMS_MATCH == $LATEST_MINOR ] then
+          echo "Patching Version: \"npm version patch\"..."
+          NEW_VERSION=$(npm version patch)
+        else
+          #update directly instead of bumping in case we've missed one
+          echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMS_MATCH}\"..."
+          NEW_VERSION=$(npm version "$(LMS_MATCH}.0")
+        fi
+
+        echo "New version number will be: $NEW_VERSION"
+        echo "::set-output name=version::$(echo "$NEW_VERSION")"
+      shell: bash
+
+    - name: Bump Version
+      id: bump-version
+      run: |
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+        if [ ${{ inputs.DRY_RUN }} == false ]; then
+          echo "Not a dry run, pushing..."
+          git push --follow-tags --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        fi
+      shell: bash
+
+    - name: Create Release
+      run: |
+        if [ ${{ inputs.DRY_RUN }} == true ]; then
+          echo "DRY_RUN option specified, skipping release creation."
+          exit 0;
+        fi
+        node ${{ github.action_path }}/create-release.js ${{ steps.update-version.outputs.version }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      shell: bash
