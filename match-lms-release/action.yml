@@ -53,7 +53,7 @@ runs:
         else
           if [ ${{ inputs.AUTO_MAINTENANCE_BRANCH }} == true ]; then
             #create a maintenance branch for the old version
-            git pull --tags --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+            git pull --tags
             git branch "$LATEST_MINOR.x" "v$LATEST_VERSION"
             git push "$LATEST_MINOR.x" --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           fi
