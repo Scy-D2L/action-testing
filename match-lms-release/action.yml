@@ -43,7 +43,8 @@ runs:
         #manipulate lms version from expected 20.22.11 format to 2022.11 format
         LMSVER_MATCH=$(echo ${{ inputs.LMS_VERSION }} | sed 's/\.//')
         #get latest minor release from package.json ie: 2022.11
-        LATEST_MINOR=$(node -p "require('./package.json').version" | sed 's/\.[^.]*$//')
+        LATEST_VERSION=$(node -p "require('./package.json').version")
+        LATEST_MINOR=$(echo $LATEST_VERSION | sed 's/\.[^.]*$//')
 
 
         if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ]; then
@@ -52,7 +53,7 @@ runs:
         else
           if [ ${{ inputs.AUTO_MAINTENANCE_BRANCH }} == true ]; then
             #create a maintenance branch for the old version
-            git push origin ":refs/heads/${LATEST_MINOR}.x" --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+            git branch "$LATEST_MINOR.x" "v$LATEST_VERSION" --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           fi
           #update directly instead of bumping in case we've missed one
           echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMSVER_MATCH}\"..."
