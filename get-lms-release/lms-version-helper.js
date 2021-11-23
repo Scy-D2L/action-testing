@@ -1,9 +1,9 @@
 
-// const chalk = require('chalk'),
-// 	rally = require('rally'),
-// 	moment = require('moment-timezone');
+const chalk = require('chalk'),
+	rally = require('rally'),
+	moment = require('moment-timezone');
 
-// const rallyVersionChecker = /^(20\.[0-9]{2}\.)([0-9]{2})$/;
+const rallyVersionChecker = /^(20\.[0-9]{2}\.)([0-9]{2})$/;
 
 async function tryGetActiveDevelopmentRelease(api_key) {
 
@@ -18,7 +18,7 @@ async function tryGetActiveDevelopmentRelease(api_key) {
 		apiVersion: 'v2.0',
 		requestOptions: {
 			headers: {
-				'X-RallyIntegrationName': 'BSI lms-version-checker',
+				'X-RallyIntegrationName': 'D2L get-lms-release action',
 				'X-RallyIntegrationVendor': 'D2L Corporation',
 				'X-RallyIntegrationVersion': '1.0'
 			}
