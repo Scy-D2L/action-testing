@@ -7,7 +7,7 @@ const rallyVersionChecker = /^(20\.[0-9]{2}\.)([0-9]{2})$/;
 
 async function tryGetActiveDevelopmentRelease(api_key) {
 
-	return '20.22.1';
+	return '20.22.2';
 
 	/* console.log('Fetching active development release from Rally...');
 	console.group();
