@@ -18,12 +18,14 @@ async function tryGetActiveDevelopmentRelease(api_key) {
 		apiVersion: 'v2.0',
 		requestOptions: {
 			headers: {
-				'X-RallyIntegrationName': 'D2L get-lms-release action',
+				'X-RallyIntegrationName': 'BSI autotag',
 				'X-RallyIntegrationVendor': 'D2L Corporation',
 				'X-RallyIntegrationVersion': '1.0'
 			}
 		}
 	});
+
+	console.log("Created rallyApi Object");
 
 	const nowUtc = moment.utc();
 	const nowEst = moment.utc().tz('America/Toronto');
@@ -45,6 +47,7 @@ async function tryGetActiveDevelopmentRelease(api_key) {
 			order: 'ReleaseDate ASC',
 			query: rally.util.query.where('ReleaseStartDate', '<=', nowISO).and('ReleaseDate', '>', nowISO).and('Project.Name', '=', 'D2L')
 		});
+		console.log("Acquired Releases");
 	} catch (e) {
 		console.error(chalk.red(e));
 		process.exitCode = 1;
