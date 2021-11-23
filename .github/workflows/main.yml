@@ -18,5 +18,5 @@ jobs:
         id: matchlmsrelease
         uses: Scy-D2L/action-testing/match-lms-release@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           LMS_VERSION: '${{ steps.getlmsver.outputs.lms-version }}'
