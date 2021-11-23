@@ -39,7 +39,7 @@ runs:
           NEW_VERSION=$(npm version patch)
         else
           #update directly instead of bumping in case we've missed one
-          echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMS_MATCH}\"..."
+          echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMSVER_MATCH}\"..."
           NEW_VERSION=$(npm version "${LMSVER_MATCH}.0")
         fi
 
