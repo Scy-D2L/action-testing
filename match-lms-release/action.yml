@@ -67,4 +67,6 @@ runs:
           exit 0;
         fi
         node ${{ github.action_path }}/create-release.js ${{ steps.update-version.outputs.version }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       shell: bash
