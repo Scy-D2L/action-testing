@@ -53,7 +53,8 @@ runs:
         else
           if [ ${{ inputs.AUTO_MAINTENANCE_BRANCH }} == true ]; then
             #create a maintenance branch for the old version
-            git branch "$LATEST_MINOR.x" "v$LATEST_VERSION" --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+            git branch "$LATEST_MINOR.x" "v$LATEST_VERSION"
+            git push "$LATEST_MINOR.x" --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           fi
           #update directly instead of bumping in case we've missed one
           echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMSVER_MATCH}\"..."
