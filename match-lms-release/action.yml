@@ -34,7 +34,7 @@ runs:
         #get latest minor release from package.json ie: 2022.11
         LATEST_MINOR=$(node -p "require('./package.json').version" | sed 's/\.[^.]*$//')
 
-        if [ "$LMS_MATCH" == "$LATEST_MINOR" ]; then
+        if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ]; then
           echo "Patching Version: \"npm version patch\"..."
           NEW_VERSION=$(npm version patch)
         else
