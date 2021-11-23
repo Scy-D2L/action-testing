@@ -50,7 +50,7 @@ runs:
           echo "Patching Version: \"npm version patch\"..."
           NEW_VERSION=$(npm version patch -m "Updated version to %s [skip ci]" | cut -dv -f2)
         else
-          if [ ${{ AUTO_MAINTENANCE_BRANCH }} == true ]; then
+          if [ ${{ inputs.AUTO_MAINTENANCE_BRANCH }} == true ]; then
             #create a maintenance branch for the old version
             git push origin ":refs/heads/${LATEST_MINOR}.x" --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           fi
