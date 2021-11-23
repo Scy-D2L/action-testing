@@ -39,7 +39,7 @@ runs:
         else
           #update directly instead of bumping in case we've missed one
           echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMS_MATCH}\"..."
-          NEW_VERSION=$(npm version "$(LMS_MATCH}.0")
+          NEW_VERSION=$(npm version "${LMS_MATCH}.0")
         fi
 
         echo "New version number will be: $NEW_VERSION"
