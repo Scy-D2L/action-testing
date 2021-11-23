@@ -23,8 +23,10 @@ runs:
   steps:
     - name: Install Dependencies
       run: |
-        echo "Installing dependencies..."
-        npm install @octokit/rest@18 --prefix ${{ github.action_path }} --no-save --loglevel error
+        if [ ${{ !contains(github.event.head_commit.message, 'skip ci') }} == true ]; then
+          echo "Installing dependencies..."
+          npm install @octokit/rest@18 --prefix ${{ github.action_path }} --no-save --loglevel error
+        fi
       shell: bash
     - name: Update Version
       run: |
@@ -41,11 +43,11 @@ runs:
 
         if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ]; then
           echo "Patching Version: \"npm version patch\"..."
-          NEW_VERSION=$(npm version patch)
+          NEW_VERSION=$(npm version patch -m "Updated version to %s [skip ci]" | cut -dv -f2)
         else
           #update directly instead of bumping in case we've missed one
           echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMSVER_MATCH}\"..."
-          NEW_VERSION=$(npm version "${LMSVER_MATCH}.0")
+          NEW_VERSION=$(npm version "${LMSVER_MATCH}.0" -m "Updated version to %s [skip ci]" | cut -dv -f2)
         fi
 
         echo "New version number will be: $NEW_VERSION"
@@ -64,6 +66,4 @@ runs:
           exit 0;
         fi
         node ${{ github.action_path }}/create-release.js ${{ steps.update-version.outputs.version }}
-      env:
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       shell: bash
