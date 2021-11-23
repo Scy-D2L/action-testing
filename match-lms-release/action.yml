@@ -26,13 +26,18 @@ runs:
         echo "Installing dependencies..."
         npm install @octokit/rest@18 --prefix ${{ github.action_path }} --no-save --loglevel error
       shell: bash
-    - name: Determine version
+    - name: Update Version
       run: |
         set -eu
-        #manipulate lms version from 20.22.11 format to 2022.11 format
+
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+        #manipulate lms version from expected 20.22.11 format to 2022.11 format
         LMSVER_MATCH=$(echo ${{ inputs.LMS_VERSION }} | sed 's/\.//')
         #get latest minor release from package.json ie: 2022.11
         LATEST_MINOR=$(node -p "require('./package.json').version" | sed 's/\.[^.]*$//')
+
 
         if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ]; then
           echo "Patching Version: \"npm version patch\"..."
@@ -45,13 +50,6 @@ runs:
 
         echo "New version number will be: $NEW_VERSION"
         echo "::set-output name=version::$NEW_VERSION"
-      shell: bash
-
-    - name: Bump Version
-      id: bump-version
-      run: |
-        git config user.name github-actions[bot]
-        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
         if [ ${{ inputs.DRY_RUN }} == false ]; then
           echo "Not a dry run, pushing..."
