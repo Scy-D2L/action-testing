@@ -29,6 +29,7 @@ runs:
         fi
       shell: bash
     - name: Update Version
+      id: update-version
       run: |
         set -eu
 
