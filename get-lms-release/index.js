@@ -4,8 +4,8 @@ const lmsVersionHelper = require('./lms-version-helper');
 
 async function run() {
     try {
-        const version = await lmsVersionHelper.tryGetActiveDevelopmentRelease()
-        console.log(version + ' tryGetActiveDevelopmentRelease');
+        const version = await lmsVersionHelper.tryGetActiveDevelopmentRelease(core.getInput('RALLY_API_KEY'))
+        console.log(version + ' is the active development release');
         core.setOutput("lms-version", version);
     } catch (error) {
         core.setFailed(error.message);

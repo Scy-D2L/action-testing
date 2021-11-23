@@ -12,6 +12,8 @@ jobs:
       - name: Get LMS Version
         id: getlmsver
         uses: Scy-D2L/action-testing/get-lms-release@main
+        with:
+          RALLY_API_KEY: ${{ secrets.RALLY_API_KEY }}
       - name: Match LMS Release
         id: matchlmsrelease
         uses: Scy-D2L/action-testing/match-lms-release@main
