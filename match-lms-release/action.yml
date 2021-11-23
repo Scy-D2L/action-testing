@@ -28,12 +28,13 @@ runs:
       shell: bash
     - name: Determine version
       run: |
+        set -eux
         #manipulate lms version from 20.22.11 format to 2022.11 format
         LMSVER_MATCH=$(echo ${{ inputs.LMS_VERSION }} | sed 's/\.//')
         #get latest minor release from package.json ie: 2022.11
         LATEST_MINOR=$(node -p "require('./package.json').version" | sed 's/\.[^.]*$//')
 
-        if [ $LMS_MATCH == $LATEST_MINOR ]; then
+        if [ "$LMS_MATCH" == "$LATEST_MINOR" ]; then
           echo "Patching Version: \"npm version patch\"..."
           NEW_VERSION=$(npm version patch)
         else
