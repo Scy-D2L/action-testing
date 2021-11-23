@@ -7,8 +7,6 @@ jobs:
     steps:
       - name: Checkout
         uses: Brightspace/third-party-actions@actions/checkout
-        with:
-          persist-credentials: false
       - name: Get LMS Version
         id: getlmsver
         uses: Scy-D2L/action-testing/get-lms-release@main
