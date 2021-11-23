@@ -31,9 +31,8 @@ runs:
         #manipulate lms version from 20.22.11 format to 2022.11 format
         LMSVER_MATCH=$(echo ${{ inputs.LMS_VERSION }} | sed 's/\.//')
         #get latest minor release from package.json ie: 2022.11
-        LATEST_MINOR=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json | sed 's/\.[^.]*$//')
+        LATEST_MINOR=$(node -p "require('./package.json').version" | sed 's/\.[^.]*$//')
 
-        #todo: patch if not on master/main?
         if [ $LMS_MATCH == $LATEST_MINOR ] then
           echo "Patching Version: \"npm version patch\"..."
           NEW_VERSION=$(npm version patch)
