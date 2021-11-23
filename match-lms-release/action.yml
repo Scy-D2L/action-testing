@@ -28,7 +28,7 @@ runs:
       shell: bash
     - name: Determine version
       run: |
-        set -eux
+        set -eu
         #manipulate lms version from 20.22.11 format to 2022.11 format
         LMSVER_MATCH=$(echo ${{ inputs.LMS_VERSION }} | sed 's/\.//')
         #get latest minor release from package.json ie: 2022.11
