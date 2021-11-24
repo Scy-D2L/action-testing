@@ -47,8 +47,7 @@ runs:
         LATEST_MINOR=$(echo $LATEST_VERSION | sed 's/\.[^.]*$//')
 
 
-        #if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ] || [[ ${GITHUB_REF##*/} =~ '[0-9]+.[0-9]+.x' ]]
-        if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ]
+        if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ] || [[ ${GITHUB_REF##*/} =~ '[0-9]+.[0-9]+.x' ]]
         then
           echo "Patching Version: \"npm version patch\"..."
           NEW_VERSION=$(npm version patch -m "Updated version to %s [skip ci]" | cut -dv -f2)
