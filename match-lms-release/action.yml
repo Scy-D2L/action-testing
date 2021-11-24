@@ -46,7 +46,7 @@ runs:
         LATEST_MINOR=$(echo $LATEST_VERSION | sed 's/\.[^.]*$//')
 
         echo running on branch ${GITHUB_REF##*/}
-        echo [[ $GITHUB_REF##*/ =~ '[0-9]+.[0-9]+.x' ]]
+        echo [[ ${GITHUB_REF##*/} =~ '[0-9]+.[0-9]+.x' ]]
 
         if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ] || [[ $GITHUB_REF##*/ =~ '[0-9]+.[0-9]+.x' ]]
         then
