@@ -1,9 +1,17 @@
-on: [push]
+name: Release
+on:
+  push:
+    branches:
+      - master
+      - main
+      - '[0-9]+.x'
+      - '[0-9]+.[0-9]+.x'
 
 jobs:
   release:
+    name: Updating with current lms release from Rally
     runs-on: ubuntu-latest
-    name: Getting current lms release from Rally
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: Brightspace/third-party-actions@actions/checkout
