@@ -1,4 +1,4 @@
-# Match LMS Release Action 
+# Match LMS Release Action
 
 This GitHub action automatically increments the package version to match a given LMS release and creates an appropriate tag.
 
@@ -28,7 +28,7 @@ jobs:
       - name: Get LMS Version
         id: getlmsver
         uses: Scy-D2L/action-testing/get-lms-release@main
-      - name: Match LMS Release Action Step
+      - name: Match LMS Release
         id: matchlmsrelease
         uses: Scy-D2L/action-testing/match-lms-release@main
         with:
@@ -37,6 +37,7 @@ jobs:
 ```
 
 Options:
+* `AUTO_MAINTENANCE_BRANCH` (default: `true`): Automatically create maintenance branches for previous releases. These branches will be named `release/{realease version}.x` (ex: 2022.1.x)
 * `DRY_RUN` (default: `false`): Simulates a release but does not actually do one
 * `GITHUB_TOKEN`: Token to use to update version in 'package.json' and create the tag -- see section below on branch protection for more details
 * `LMS_VERSION`: Current LMS version in the format `xx.yy.zz`
