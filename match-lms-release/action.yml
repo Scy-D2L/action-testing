@@ -47,7 +47,7 @@ runs:
         LATEST_MINOR=$(echo $LATEST_VERSION | sed 's/\.[^.]*$//')
 
 
-        #if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ] || [ ${GITHUB_REF##*/} =~ '[0-9]+.[0-9]+.x' ]
+        #if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ] || [[ ${GITHUB_REF##*/} =~ '[0-9]+.[0-9]+.x' ]]
         if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ]
         then
           echo "Patching Version: \"npm version patch\"..."
@@ -57,7 +57,7 @@ runs:
             #create a maintenance branch for the old version
             git fetch https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }} "+refs/tags/v$LATEST_VERSION:refs/tags/v$LATEST_VERSION"
             git branch "$LATEST_MINOR.x" "v$LATEST_VERSION"
-            git push https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }} "$LATEST_MINOR.x"
+            git push https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }} "release/$LATEST_MINOR.x"
           fi
           #update directly instead of bumping in case we've missed one
           echo "Updating major/minor versions to match current Brightspace release: \"npm version ${LMSVER_MATCH}\"..."
