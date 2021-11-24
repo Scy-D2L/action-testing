@@ -36,7 +36,6 @@ runs:
       id: update-version
       run: |
         set -eu
-        echo running on branch ${GITHUB_REF##*/}
         git config user.name github-actions[bot]
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
@@ -46,15 +45,16 @@ runs:
         LATEST_VERSION=$(node -p "require('./package.json').version")
         LATEST_MINOR=$(echo $LATEST_VERSION | sed 's/\.[^.]*$//')
 
+        echo running on branch ${GITHUB_REF##*/}
+        echo [[ $GITHUB_REF##*/ =~ '[0-9]+.[0-9]+.x' ]]
 
-        #if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ] || [[ ${GITHUB_REF##*/} =~ '[0-9]+.[0-9]+.x' ]]
-        if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ]
+        if [ "$LMSVER_MATCH" == "$LATEST_MINOR" ] || [[ $GITHUB_REF##*/ =~ '[0-9]+.[0-9]+.x' ]]
         then
           echo "Patching Version: \"npm version patch\"..."
           NEW_VERSION=$(npm version patch -m "Updated version to %s [skip ci]" | cut -dv -f2)
         else
           if [ ${{ inputs.AUTO_MAINTENANCE_BRANCH }} == true ]; then
-            #create a maintenance branch for the old version
+            echo creating a maintenance branch for ${LATEST_MINOR}.x
             git fetch https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }} "+refs/tags/v$LATEST_VERSION:refs/tags/v$LATEST_VERSION"
             git branch "release/$LATEST_MINOR.x" "v$LATEST_VERSION"
             git push https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }} "release/$LATEST_MINOR.x"
