@@ -25,15 +25,12 @@ jobs:
         uses: Brightspace/third-party-actions@actions/checkout
       - name: Setup Node
         uses: Brightspace/third-party-actions@actions/setup-node
-      - name: Get LMS Version
-        id: getlmsver
-        uses: Scy-D2L/action-testing/get-lms-release@main
       - name: Match LMS Release
         id: matchlmsrelease
         uses: Scy-D2L/action-testing/match-lms-release@main
         with:
           GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
-          lms-version: '${{ steps.getlmsver.outputs.lms-version }}'
+          RALLY_API_KEY: ${{ secrets.RALLY_API_KEY }}
 ```
 
 Options:
