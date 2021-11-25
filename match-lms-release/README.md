@@ -37,7 +37,7 @@ Options:
 * `AUTO_MAINTENANCE_BRANCH` (default: `true`): Automatically create maintenance branches for previous releases. These branches will be named `release/{realease version}.x` (ex: 2022.1.x)
 * `DRY_RUN` (default: `false`): Simulates a release but does not actually do one
 * `GITHUB_TOKEN`: Token to use to update version in 'package.json' and create the tag -- see section below on branch protection for more details
-* `LMS_VERSION`: Current LMS version in the format `xx.yy.zz`
+* `RALLY_API_KEY`: Key for the RALLY API (used to retrieve active development release)
 
 Outputs:
 * `VERSION`: will contain the new version number of the release
