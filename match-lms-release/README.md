@@ -15,6 +15,9 @@ on:
     branches:
       - master
       - main
+      - '[0-9]+.x'
+      - '[0-9]+.[0-9]+.x'
+      - release/[0-9]+.[0-9]+.x
 jobs:
   release:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
