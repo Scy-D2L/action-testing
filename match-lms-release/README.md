@@ -1,4 +1,4 @@
-# Match LMS Release Action
+# Action to Match LMS Release
 
 This GitHub action automatically increments the package version to match a given LMS release and creates an appropriate tag.
 
