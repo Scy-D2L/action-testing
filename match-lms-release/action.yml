@@ -46,7 +46,7 @@ runs:
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
         #manipulate lms version from expected 20.22.11 format to 2022.11 format
-        LMSVER_MATCH=$(echo ${{ steps.get-lms-version.outputs.lms-version}} | sed 's/\.//')
+        LMSVER_MATCH=$(echo ${{ steps.get-lms-version.outputs.LMS_VERSION}} | sed 's/\.//')
         #get latest minor release from package.json ie: 2022.11
         LATEST_VERSION=$(node -p "require('./package.json').version")
         LATEST_MINOR=$(echo $LATEST_VERSION | sed 's/\.[^.]*$//')

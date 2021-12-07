@@ -1,5 +1,5 @@
 # Match LMS Release Action
- 
+
 This GitHub action automatically increments the package version to match a given LMS release and creates an appropriate tag.
 
 ## Using the Action
@@ -43,7 +43,7 @@ Options:
 * `RALLY_API_KEY`: Key for the RALLY API (used to retrieve active development release)
 
 Outputs:
-* `VERSION`: will contain the new version number of the release
+* `VERSION`: Contains the new version number of the release
 
 ### Branch Protection Rules and D2L_GITHUB_TOKEN
 

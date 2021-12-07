@@ -6,7 +6,7 @@ async function run() {
     try {
         const version = await lmsVersionHelper.tryGetActiveDevelopmentRelease(core.getInput('RALLY_API_KEY'))
         console.log(version + ' is the active development release');
-        core.setOutput("lms-version", version);
+        core.setOutput("LMS_VERSION", version);
     } catch (error) {
         core.setFailed(error.message);
     }

@@ -1,13 +1,13 @@
-# Get LMS Release action
+# Get LMS Release Action
 
-This action retrieves the current dev version of Brightspace from Rally
+This GitHub action pulls the active development release version of the LMS from Rally for use in other automation.
 
-## Outputs
+## Using the Action
 
-## `lms-release`
+Typically this action is triggered from a workflow that runs on your `main` or `master` branch after each commit or pull request merge.
 
-Current dev version of Brightspace
+Inputs:
+* `RALLY_API_KEY`: Key for the RALLY API (used to retrieve active development release)
 
-## Example usage
-
-uses: Scy-D2L/action-testing/get-lms-release@main
+Outputs:
+* `LMS_VERSION`: Will contain the current active development release version

@@ -1,11 +1,8 @@
 {
-  "name": "action-testing",
-  "version": "2022.10.0",
+  "name": "get-lms-release",
+  "version": "1.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Scy-D2L/action-testing.git"
@@ -16,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/Scy-D2L/action-testing/issues"
   },
-  "homepage": "https://github.com/Scy-D2L/action-testing#readme",
+  "homepage": "https://github.com/Scy-D2L/action-testing/get-lms-release#readme",
   "dependencies": {
     "@actions/core": "^1.6.0",
     "@actions/github": "^5.0.0",
