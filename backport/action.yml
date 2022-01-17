@@ -52,12 +52,16 @@ runs:
       with:
         github-token:  ${{ inputs.GITHUB_TOKEN }}
         script: |
-          const response = await github.repos.getBranch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            branch: `release/${process.env.DESTINATION_VERSION}`
-          });
-          return response.data;
+          try {
+            const response = await github.repos.getBranch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: `release/${process.env.DESTINATION_VERSION}`
+            });
+            return response.data;
+          } catch (err) {
+            console.log(err);
+          }
 
     #checkout the destination branch
     - name: Checkout Destination Branch
