@@ -133,6 +133,7 @@ jobs:
               body: `Backport of ${process.env.SOURCE_PR_HTML_URL} to ${process.env.DESTINATION_VERSION}`,
               draft: true
             });
+            console.log(response.data);
             return response.data
 
       #Comment on source PR that destination PR is ready
