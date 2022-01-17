@@ -60,7 +60,13 @@ runs:
             });
             return response.data;
           } catch (err) {
-            console.log(err);
+            console.log(err.message);
+            github.issues.createComment({
+              issue_number: context.payload.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Could not find maintenance branch for backport: ${err.message}`
+            });
           }
 
     #checkout the destination branch
