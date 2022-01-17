@@ -1,6 +1,11 @@
 name: Create Backport PR
 description: 'Create a backport PR from a source PR back to a specified release branch. Example: /backport 20.21.7'
 
+inputs:
+  GITHUB_TOKEN:
+    description: Token to use to update version in 'package.json' and create the tag
+    required: true
+
 runs:
   using: composite
   steps:
@@ -9,7 +14,7 @@ runs:
       id: source-pr
       uses: Brightspace/third-party-actions@actions/github-script
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token:  ${{ inputs.GITHUB_TOKEN }}
         script: |
           const pullId = context.payload.issue.html_url.split('/').pop();
           const response = await github.pulls.get({
@@ -32,7 +37,7 @@ runs:
       env:
         BODY: ${{ github.event.comment.body }}
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token:  ${{ inputs.GITHUB_TOKEN }}
         result-encoding: string
         script: |
           const version = process.env.BODY.split(' ').pop();
@@ -45,7 +50,7 @@ runs:
       env:
         DESTINATION_VERSION: ${{ steps.destination-version.outputs.result }}
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token:  ${{ inputs.GITHUB_TOKEN }}
         script: |
           const response = await github.repos.getBranch({
             owner: context.repo.owner,
@@ -68,7 +73,7 @@ runs:
         DESTINATION_VERSION: ${{ steps.destination-version.outputs.result }}
         DESTINATION_BRANCH_LINK: ${{ fromJSON(steps.destination-branch.outputs.result)._links.html }}
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token:  ${{ inputs.GITHUB_TOKEN }}
         script: |
           github.issues.createComment({
             issue_number: context.payload.issue.number,
@@ -82,7 +87,7 @@ runs:
       id: source-pr-patch
       uses: Brightspace/third-party-actions@actions/github-script
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token:  ${{ inputs.GITHUB_TOKEN }}
         result-encoding: string
         script: |
           const response = await github.pulls.get({
@@ -124,7 +129,7 @@ runs:
         SOURCE_PR_HEAD: ${{ fromJSON(steps.source-pr.outputs.result).head.ref }}
         SOURCE_PR_HTML_URL: ${{ fromJSON( steps.source-pr.outputs.result).html_url }}
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token:  ${{ inputs.GITHUB_TOKEN }}
         script: |
           const response = await github.pulls.create({
             owner: context.repo.owner,
@@ -146,7 +151,7 @@ runs:
         DESTINATION_PR_NUMBER: ${{ fromJSON( steps.backport-pr.outputs.result).number }}
         SOURCE_PR_HTML_URL: ${{ fromJSON( steps.source-pr.outputs.result).html_url }}
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token:  ${{ inputs.GITHUB_TOKEN }}
         script: |
           github.issues.createComment({
             issue_number: context.payload.issue.number,
