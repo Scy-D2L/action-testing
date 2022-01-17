@@ -133,7 +133,6 @@ jobs:
               body: `Backport of ${process.env.SOURCE_PR_HTML_URL} to ${process.env.DESTINATION_VERSION}`,
               draft: true
             });
-            console.log(response.data);
             return response.data
 
       #Comment on source PR that destination PR is ready
@@ -142,6 +141,7 @@ jobs:
         env:
           DESTINATION_VERSION: ${{ steps.destination-version.outputs.result }}
           DESTINATION_BRANCH_LINK: ${{ fromJSON(steps.destination-branch.outputs.result)._links.html }}
+          DESTINATION_PR_NUMBER: ${{ fromJSON( steps.backport-pr.outputs.result).number }}
           SOURCE_PR_HTML_URL: ${{ fromJSON( steps.source-pr.outputs.result).html_url }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -150,7 +150,7 @@ jobs:
               issue_number: context.payload.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK}) Ready: ${process.env.SOURCE_PR_HTML_URL}`
+              body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK}) Ready: #${process.env.DESTINATION_PR_NUMBER}`
             });
 
       #If someothing has broken, clean it up
