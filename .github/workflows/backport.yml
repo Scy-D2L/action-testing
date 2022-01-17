@@ -149,7 +149,7 @@ jobs:
               issue_number: context.payload.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK}) Ready: ${process.env.SOURCE_PR_HTML_URL}'
+              body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK}) Ready: ${process.env.SOURCE_PR_HTML_URL}`
             });
 
       #If someothing has broken, clean it up
