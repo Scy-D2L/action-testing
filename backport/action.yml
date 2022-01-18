@@ -60,13 +60,18 @@ runs:
             });
             return response.data;
           } catch (err) {
-            console.log(`::workflow-command error_message=${err.message}`);
+            github.issues.createComment({
+              issue_number: context.payload.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `There was a problem getting the branch to backport: ${err.message}`
+            });
             console.error(err);
           }
 
     #checkout the destination branch
     - name: Checkout Destination Branch
-      if: ${{ error_message }}
+      if: ${{ env.error_message }}
       uses: Brightspace/third-party-actions@actions/checkout
       with:
         ref: ${{ fromJSON(steps.destination-branch.outputs.result).name }}
