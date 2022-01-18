@@ -97,6 +97,8 @@ runs:
     - name: Get List of Source Commits
       id: source-pr-patch
       uses: Brightspace/third-party-actions@actions/github-script
+      env:
+        PRNUM: ${{ fromJSON(steps.source-pr.outputs.result).number }}
       with:
         github-token:  ${{ inputs.GITHUB_TOKEN }}
         result-encoding: string
@@ -104,7 +106,7 @@ runs:
           const response = await github.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            pull_number: ${{ fromJSON(steps.source-pr.outputs.result).number }},
+            pull_number: process.env.PRNUM,
             mediaType: {
               format: "application/vnd.github.v3.patch"
             }
@@ -119,19 +121,14 @@ runs:
         git config user.name github-actions
         git config user.email github-actions@github.com
         git fetch origin +refs/heads/$INPUT_DESTINATION_HEAD_BRANCH:refs/heads/$INPUT_DESTINATION_HEAD_BRANCH || true
-        echo "before checkout"
         git checkout $INPUT_DESTINATION_HEAD_BRANCH || git checkout -b $INPUT_DESTINATION_HEAD_BRANCH
-        echo "after checkout"
         git apply --check << "D2LEOF"
         ${{ steps.source-pr-patch.outputs.result }}
         D2LEOF
-        echo "after apply"
         git am --keep-cr --signoff << "D2LEOF"
         ${{ steps.source-pr-patch.outputs.result }}
         D2LEOF
-        echo "after AM"
         git push origin $INPUT_DESTINATION_HEAD_BRANCH:$INPUT_DESTINATION_HEAD_BRANCH
-        echo "push"
       shell: bash
 
     #Open backport PR on destination branch
@@ -164,7 +161,7 @@ runs:
       env:
         DESTINATION_VERSION: ${{ steps.destination-version.outputs.result }}
         DESTINATION_BRANCH_LINK: ${{ fromJSON(steps.destination-branch.outputs.result)._links.html }}
-        DESTINATION_PR_NUMBER: ${{ fromJSON( steps.backport-pr.outputs.result).number }}
+        DESTINATION_PR_HTML_URL: ${{ fromJSON(steps.backport-pr.outputs.result).html_url }}
         SOURCE_PR_HTML_URL: ${{ fromJSON( steps.source-pr.outputs.result).html_url }}
       with:
         github-token:  ${{ inputs.GITHUB_TOKEN }}
@@ -173,7 +170,21 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK}) Ready: #${process.env.DESTINATION_PR_NUMBER}`
+            body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_PR_HTML_URL}`
+          });
+
+    #Comment on source PR if something went wrong
+    - name: Failure comment notification
+      if: ${{ failure() }}
+      uses: Brightspace/third-party-actions@actions/github-script
+      with:
+        github-token: ${{ inputs.GITHUB_TOKEN }}
+        script: |
+          github.issues.createComment({
+            issue_number: context.payload.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `Backport failed. Check [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more info. Manual cherry picking may be required.`
           });
 
     #If someothing has broken, clean it up
