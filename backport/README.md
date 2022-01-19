@@ -25,3 +25,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+## Test section
+
+This section exists to be editted by test PRs and will be removed when the action is finalized
