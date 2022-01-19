@@ -11,6 +11,7 @@ const octokit = new Octokit({
 async function createRelease() {
 
 	console.log(`Creating release "${release}"...`)
+	console.log('Some Change Happened Here :D');
 
 	await octokit.repos.createRelease({
 		owner: owner,
