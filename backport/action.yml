@@ -65,7 +65,6 @@ runs:
 
     #checkout the destination branch
     - name: Checkout Destination Branch
-      if: ${{ env.error_message }}
       uses: Brightspace/third-party-actions@actions/checkout
       with:
         ref: ${{ fromJSON(steps.destination-branch.outputs.result).name }}
