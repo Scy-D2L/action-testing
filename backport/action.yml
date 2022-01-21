@@ -164,7 +164,7 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK})${process.env.DESTINATION_PR_HTML_URL}`
+            body: `Backport PR has been created: ${process.env.DESTINATION_PR_HTML_URL} backports the changes from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK})`
           });
 
     #Comment on source PR if something went wrong
