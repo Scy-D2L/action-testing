@@ -128,6 +128,8 @@ runs:
         git checkout $INPUT_DESTINATION_HEAD_BRANCH || git checkout -b $INPUT_DESTINATION_HEAD_BRANCH
         echo "================================ STATUS =========="
         git status
+        echo "================================ LOG =========="
+        git log -p -2
         echo "================================ APPLY =========="
         git apply --check << "D2LEOF"
         ${{ steps.source-pr-patch.outputs.result }}
