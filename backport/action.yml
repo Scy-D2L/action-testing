@@ -24,12 +24,6 @@ runs:
           });
           return response.data;
 
-    #checkout the branch used by the source PR
-    - name: Checkout Source Branch
-      uses: Brightspace/third-party-actions@actions/checkout
-      with:
-        ref: ${{ fromJSON(steps.source-pr.outputs.result).head.sha }}
-
     #grab the body of the comment to find the version we want to backport to
     - name: Get Destination Name
       id: destination-version
