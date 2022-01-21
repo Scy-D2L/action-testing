@@ -173,6 +173,7 @@ runs:
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
+          console.log("Outcome Test:");
           console.log(`${{ steps.destination-branch.outcome }}`);
           github.issues.createComment({
             issue_number: context.payload.issue.number,
