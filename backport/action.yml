@@ -50,7 +50,7 @@ runs:
             const response = await github.repos.getBranch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              branch: `release/${process.env.DESTINATION_VERSION}`
+              branch: `release/${ process.env.DESTINATION_VERSION }`
             });
             return response.data;
           } catch (err) {
@@ -58,7 +58,7 @@ runs:
               issue_number: context.payload.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Branch not found: "release/${process.env.DESTINATION_VERSION}"`
+              body: `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`
             });
             console.error(err);
           }
@@ -83,7 +83,7 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Initiating backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK})`
+            body: `Initiating backport from ${ process.env.SOURCE_PR_HTML_URL } to [${ process.env.DESTINATION_VERSION }](${ process.env.DESTINATION_BRANCH_LINK })`
           });
 
     #Get list of commits from source Branch
@@ -140,10 +140,10 @@ runs:
           const response = await github.pulls.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            title: `Backport to ${process.env.DESTINATION_VERSION} of "${process.env.SOURCE_PR_TITLE}"`,
-            head: `ghworkflow/backport-${process.env.DESTINATION_VERSION}/${process.env.SOURCE_PR_HEAD}`,
+            title: `Backport to ${ process.env.DESTINATION_VERSION } of "${ process.env.SOURCE_PR_TITLE }"`,
+            head: `ghworkflow/backport-${ process.env.DESTINATION_VERSION }/${ process.env.SOURCE_PR_HEAD }`,
             base: process.env.DESTINATION_BRANCH,
-            body: `Backport of ${process.env.SOURCE_PR_HTML_URL} to ${process.env.DESTINATION_VERSION}`,
+            body: `Backport of ${ process.env.SOURCE_PR_HTML_URL } to ${ process.env.DESTINATION_VERSION }`,
             draft: true
           });
           return response.data
@@ -163,7 +163,7 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport PR has been created: ${process.env.DESTINATION_PR_HTML_URL} backports the changes from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK})`
+            body: `Backport PR has been created: ${ process.env.DESTINATION_PR_HTML_URL } backports the changes from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK})`
           });
 
     #Comment on source PR if something went wrong
@@ -173,12 +173,12 @@ runs:
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          console.log(`${ steps.destination-branch.outcome}`);
+          console.log(`${{ steps.destination-branch.outcome }}`);
           github.issues.createComment({
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport failed. Check [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
+            body: `Backport failed. Check [workflow logs](https://github.com/${ context.repo.owner }/${ context.repo.repo }/actions/runs/${ context.runId }) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
           });
 
     #If someothing has broken, clean it up
