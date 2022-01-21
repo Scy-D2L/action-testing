@@ -64,7 +64,7 @@ runs:
               issue_number: context.payload.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `There was a problem getting the branch to backport: ${err.message}`
+              body: `Branch not found: "release/${process.env.DESTINATION_VERSION}"`
             });
             console.error(err);
           }
@@ -111,6 +111,7 @@ runs:
               format: "application/vnd.github.v3.patch"
             }
           });
+          console.log(response.data);
           return response.data
 
     #Apply commits from Source Branch to Destination Branch
