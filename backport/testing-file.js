@@ -10,7 +10,7 @@ const octokit = new Octokit({
 
 async function createRelease() {
 
-	console.log(`Creating release "${release}"...`)
+	console.log(`Creating release with extra text "${release}"...`)
 
 	await octokit.repos.createRelease({
 		owner: owner,
