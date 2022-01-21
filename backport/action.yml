@@ -122,7 +122,13 @@ runs:
         git config user.name github-actions
         git config user.email github-actions@github.com
         git fetch origin +refs/heads/$INPUT_DESTINATION_HEAD_BRANCH:refs/heads/$INPUT_DESTINATION_HEAD_BRANCH || true
+        echo "================================ BRANCH LIST =========="
+        git branch
+        echo "================================ CHECKOUT =========="
         git checkout $INPUT_DESTINATION_HEAD_BRANCH || git checkout -b $INPUT_DESTINATION_HEAD_BRANCH
+        echo "================================ STATUS =========="
+        git status
+        echo "================================ APPLY =========="
         git apply --check << "D2LEOF"
         ${{ steps.source-pr-patch.outputs.result }}
         D2LEOF
