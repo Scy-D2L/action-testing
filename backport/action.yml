@@ -115,15 +115,7 @@ runs:
         git config user.name github-actions
         git config user.email github-actions@github.com
         git fetch origin +refs/heads/$INPUT_DESTINATION_HEAD_BRANCH:refs/heads/$INPUT_DESTINATION_HEAD_BRANCH || true
-        echo "================================ BRANCH LIST =========="
-        git branch
-        echo "================================ CHECKOUT =========="
         git checkout $INPUT_DESTINATION_HEAD_BRANCH || git checkout -b $INPUT_DESTINATION_HEAD_BRANCH
-        echo "================================ STATUS =========="
-        git status
-        echo "================================ LOG =========="
-        git log -n 1
-        echo "================================ APPLY =========="
         git apply --check << "D2LEOF"
         ${{ steps.source-pr-patch.outputs.result }}
         D2LEOF
@@ -172,7 +164,7 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_PR_HTML_URL}`
+            body: `Backport from ${process.env.SOURCE_PR_HTML_URL} to [${process.env.DESTINATION_VERSION}](${process.env.DESTINATION_BRANCH_LINK})${process.env.DESTINATION_PR_HTML_URL}`
           });
 
     #Comment on source PR if something went wrong
@@ -186,7 +178,7 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport failed. Check [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more info. Manual cherry picking may be required.`
+            body: `Backport failed. Check [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
           });
 
     #If someothing has broken, clean it up
