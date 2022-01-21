@@ -18,7 +18,7 @@ async function createRelease() {
 		tag_name: release,
 		name: release
 	});
-	console.log('Success!');
+	console.log('Success! With extra text!');
 
 }
 
