@@ -54,8 +54,13 @@ runs:
             });
             return response.data;
           } catch (err) {
+            github.issues.createComment({
+              issue_number: context.payload.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Branch not found: "release/${process.env.DESTINATION_VERSION}"`
+            });
             console.error(err);
-            core.setOutput('NOT_FOUND', `Branch not found: "release/${process.env.DESTINATION_VERSION}".`);
           }
 
     #checkout the destination branch
@@ -165,21 +170,18 @@ runs:
     - name: Failure comment notification
       if: ${{ failure() }}
       uses: Brightspace/third-party-actions@actions/github-script
-      env:
-        not-found-error: ${{ steps.destination-branch.outputs.NOT_FOUND }}
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          console.log(${env.not-found-error});
-          const error_message = ${env.not-found-error} ? ${env.not-found-error} : `Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`;
+          console.log(`${ steps.destination-branch.outcome}`);
           github.issues.createComment({
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport failed. ${error_message} Check [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more info.`
+            body: `Backport failed. Check [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
           });
 
-    #If something has broken, clean it up
+    #If someothing has broken, clean it up
     - name: Failure cleanup
       if: ${{ failure() }}
       run: |
