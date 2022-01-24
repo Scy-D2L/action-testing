@@ -161,6 +161,8 @@ runs:
     - name: Failure comment notification
       if: ${{ failure() }}
       uses: Brightspace/third-party-actions@actions/github-script
+      env:
+        DESTINATION_VERSION: ${{ steps.destination-version.outputs.result }}
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
@@ -169,8 +171,9 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport failed.
-            Check that your destination branch exists: "release/${ process.env.DESTINATION_VERSION }"
+            body: `**Backport failed**
+
+            Check that your destination branch exists: \`release/${ process.env.DESTINATION_VERSION }\`
             If so, check the [workflow logs](https://github.com/${ context.repo.owner }/${ context.repo.repo }/actions/runs/${ context.runId }) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
           });
 
