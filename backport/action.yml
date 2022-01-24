@@ -60,6 +60,7 @@ runs:
               repo: context.repo.repo,
               body: `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`
             });
+            core.setOutput("error", `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`);
             console.error(err);
           }
 
@@ -171,11 +172,11 @@ runs:
       if: ${{ failure() }}
       uses: Brightspace/third-party-actions@actions/github-script
       env:
-        DESTINATION_BRANCH_CONCLUSION: ${{ steps.destination-branch.conclusion }}
+        FIND_DESTINATION_ERROR: ${{ steps.destination-branch.outputs.error }}
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          console.log(`Outcome Test: ${ process.env.DESTINATION_BRANCH_CONCLUSION }`);
+          console.log(${ process.env.FIND_DESTINATION_ERROR });
           github.issues.createComment({
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
