@@ -68,7 +68,7 @@ runs:
 
     #checkout the destination branch
     - name: Checkout Destination Branch
-      continue-on-error: true
+      if: ${{ steps.destination-branch.outcome == 'success' }}
       uses: Brightspace/third-party-actions@actions/checkout
       with:
         ref: ${{ fromJSON(steps.destination-branch.outputs.result).name }}
