@@ -74,6 +74,7 @@ runs:
 
     #add comment to source PR to acknowledge backport process
     - name: Acknowledge comment
+      if: ${{ success() }}
       uses: Brightspace/third-party-actions@actions/github-script
       env:
         SOURCE_PR_HTML_URL: ${{ fromJSON(steps.source-pr.outputs.result).html_url }}
@@ -92,6 +93,7 @@ runs:
     #Get list of commits from source Branch
     - name: Get List of Source Commits
       id: source-pr-patch
+      if: ${{ success() }}
       uses: Brightspace/third-party-actions@actions/github-script
       env:
         PRNUM: ${{ fromJSON(steps.source-pr.outputs.result).number }}
@@ -111,6 +113,7 @@ runs:
 
     #Apply commits from Source Branch to Destination Branch
     - name: Apply patch and push
+      if: ${{ success() }}
       env:
         INPUT_DESTINATION_HEAD_BRANCH: 'ghworkflow/backport-${{ steps.destination-version.outputs.result }}/${{ fromJSON(steps.source-pr.outputs.result).head.ref }}'
       run: |
@@ -129,6 +132,7 @@ runs:
 
     #Open backport PR on destination branch
     - name: Open Backport PR
+      if: ${{ success() }}
       id: backport-pr
       uses: Brightspace/third-party-actions@actions/github-script
       env:
@@ -153,6 +157,7 @@ runs:
 
     #Comment on source PR that destination PR is ready
     - name: Create PR Comment
+      if: ${{ success() }}
       uses: Brightspace/third-party-actions@actions/github-script
       env:
         DESTINATION_VERSION: ${{ steps.destination-version.outputs.result }}
