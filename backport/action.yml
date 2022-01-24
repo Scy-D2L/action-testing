@@ -62,6 +62,7 @@ runs:
               body: `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`
             });
             core.setFailed(`Branch not found: "release/${ process.env.DESTINATION_VERSION }"`);
+            core.setOutcome()
           }
 
     #checkout the destination branch
@@ -174,7 +175,7 @@ runs:
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          console.log(`Outcome: ${{ steps.destination-version.outcome }}`);
+          console.log(`Outcome: ${ steps.destination-version.outcome }`);
           github.issues.createComment({
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
