@@ -47,22 +47,12 @@ runs:
       with:
         github-token:  ${{ inputs.GITHUB_TOKEN }}
         script: |
-          try {
-            const response = await github.repos.getBranch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              branch: `release/${ process.env.DESTINATION_VERSION }`
-            });
-            return response.data;
-          } catch (err) {
-            github.issues.createComment({
-              issue_number: context.payload.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`
-            });
-            core.setFailed(`Branch not found: "release/${ process.env.DESTINATION_VERSION }"`);
-          }
+          const response = await github.repos.getBranch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            branch: `release/${ process.env.DESTINATION_VERSION }`
+          });
+          return response.data;
 
     #checkout the destination branch
     - name: Checkout Destination Branch
@@ -179,7 +169,9 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Backport failed. Check [workflow logs](https://github.com/${ context.repo.owner }/${ context.repo.repo }/actions/runs/${ context.runId }) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
+            body: `Backport failed.
+            Check that your destination branch exists: "release/${ process.env.DESTINATION_VERSION }"
+            If so, check the [workflow logs](https://github.com/${ context.repo.owner }/${ context.repo.repo }/actions/runs/${ context.runId }) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
           });
 
     #If someothing has broken, clean it up
