@@ -61,14 +61,11 @@ runs:
               repo: context.repo.repo,
               body: `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`
             });
-            core.setOutput("error", `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`);
-            console.error(err);
             core.setFailed(`Branch not found: "release/${ process.env.DESTINATION_VERSION }"`);
           }
 
     #checkout the destination branch
     - name: Checkout Destination Branch
-      if: ${{ steps.destination-branch.outcome == 'success' }}
       uses: Brightspace/third-party-actions@actions/checkout
       with:
         ref: ${{ fromJSON(steps.destination-branch.outputs.result).name }}
@@ -174,12 +171,10 @@ runs:
     - name: Failure comment notification
       if: ${{ failure() }}
       uses: Brightspace/third-party-actions@actions/github-script
-      env:
-        FIND_DESTINATION_ERROR: ${{ steps.destination-branch.outputs.error }}
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          console.log(${ process.env.FIND_DESTINATION_ERROR });
+          console.log(`Outcome: ${{ steps.destination-version.outcome }}`);
           github.issues.createComment({
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
