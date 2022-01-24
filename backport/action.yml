@@ -74,7 +74,8 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Initiating backport from ${ process.env.SOURCE_PR_HTML_URL } to [${ process.env.DESTINATION_VERSION }](${ process.env.DESTINATION_BRANCH_LINK })`
+            body: `Initiating backport to [${ process.env.DESTINATION_VERSION }](${ process.env.DESTINATION_BRANCH_LINK })
+            View [workflow progress](https://github.com/${ context.repo.owner }/${ context.repo.repo }/actions/runs/${ context.runId }) for more info.`
           });
 
     #Get list of commits from source Branch
