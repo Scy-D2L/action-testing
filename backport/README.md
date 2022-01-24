@@ -1,10 +1,10 @@
 # Backport Action
 
-This GitHub action automatically cherry-picks the commits from a PR to open a new PR against a maintenance branch for backporting.
+This GitHub action automatically cherry-picks the commits from a PR to open a new PR against a maintenance branch for backporting. Maintenance branches must begin with the prefix `release/` (ie `release/2022.1.x`)
 
 ## Using the Action
 
-This action should be triggered from a workflow that runs on PR comments of the format `/backport <maintenance-branch-name>` - ie `/backport 2022.1.x` to create a backport pr to a branch named `2022.1.x` or `release/2022.1.x`
+This action should be triggered from a workflow that runs on PR comments of the format `/backport <maintenance-branch-name>` - ie `/backport 2022.1.x` to create a backport pr to a branch named `release/2022.1.x`
 
 Here's a sample backport workflow:
 
