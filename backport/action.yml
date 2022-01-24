@@ -62,6 +62,7 @@ runs:
             });
             core.setOutput("error", `Branch not found: "release/${ process.env.DESTINATION_VERSION }"`);
             console.error(err);
+            core.setFailed(`Branch not found: "release/${ process.env.DESTINATION_VERSION }"`);
           }
 
     #checkout the destination branch
