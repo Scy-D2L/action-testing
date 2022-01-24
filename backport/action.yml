@@ -175,7 +175,7 @@ runs:
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          console.log(`Outcome: ${ steps.destination-branch.outcome }`);
+          console.log(${{ steps.destination-branch.outcome }});
           github.issues.createComment({
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
