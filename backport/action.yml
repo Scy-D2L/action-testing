@@ -171,7 +171,7 @@ runs:
             issue_number: context.payload.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `**Backport failed**
+            body: `**Backport to ${ process.env.DESTINATION_VERSION } failed**
 
             Check that your destination branch exists: \`release/${ process.env.DESTINATION_VERSION }\`
             If so, check the [workflow logs](https://github.com/${ context.repo.owner }/${ context.repo.repo }/actions/runs/${ context.runId }) for more info. Manual [cherry picking](https://git-scm.com/docs/git-cherry-pick) may be required.`
